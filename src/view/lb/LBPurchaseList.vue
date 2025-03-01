@@ -10,15 +10,15 @@
           <div class="card-body">
             <form>
               <div class="form-group mb-15 mb-md-20 cursor-pointer" @click="getList()">
-                <a class=" default-btn position-relative transition border-0 fw-medium text-white pt-11 pb-11 ps-25 pe-25 pt-md-12 pb-md-12 ps-md-30 pe-md-30 rounded-1 bg-success fs-md-15 fs-lg-16 d-inline-block me-10 mt-10 mt-md-0 text-decoration-none">
-                  <i class="flaticon-list position-relative ms-5 m-6 fs-12"></i>
-                  Filterlash
+                <a class="w-100 text-center default-btn position-relative transition border-0 fw-medium text-white pt-11 pb-11 ps-25 pe-25 pt-md-12 pb-md-12 ps-md-30 pe-md-30 rounded-1 bg-success fs-md-15 fs-lg-16 d-inline-block me-10 mt-10 mt-md-0 text-decoration-none">
+                  <i class="ph ph-funnel ms-6 fs-18 fw-bold"></i>
+                  <span class="fs-18 mb-5 ">Filterlash</span>
                 </a>
               </div>
               <div class="form-group mb-15 mb-md-20 cursor-pointer" @click="clear()">
-                <a class=" default-btn position-relative transition border-0 fw-medium text-white pt-11 pb-11 ps-25 pe-25 pt-md-12 pb-md-12 ps-md-30 pe-md-30 rounded-1 bg-danger fs-md-15 fs-lg-16 d-inline-block me-10 mt-10 mt-md-0 text-decoration-none">
-                  <i class="flaticon-delete position-relative ms-5 m-2 fs-12"></i>
-                  Tozalash
+                <a class="w-100 text-center default-btn position-relative transition border-0 fw-medium text-white pt-11 pb-11 ps-25 pe-25 pt-md-12 pb-md-12 ps-md-30 pe-md-30 rounded-1 bg-danger fs-md-15 fs-lg-16 d-inline-block me-10 mt-10 mt-md-0 text-decoration-none">
+                  <i class="ph ph-trash  ms-6 fs-18 fw-bold"></i>
+                  <span class="fs-18 mb-5">Tozalash</span>
                 </a>
               </div>
               <div class="form-group mb-15 mb-md-20">
@@ -98,17 +98,6 @@
         <div class="card mb-25 border-0 rounded-0 bg-white letter-spacing">
           <div class="card-head box-shadow bg-white d-md-flex align-items-center justify-content-between p-15 p-sm-20 p-md-25">
             <form class="search-box position-relative">
-              <input
-                  type="text"
-                  class="form-control shadow-none text-black rounded-0 border-0"
-                  placeholder="Search ticket"
-              />
-              <button
-                  type="submit"
-                  class="bg-transparent text-primary transition p-0 border-0"
-              >
-                <i class="flaticon-search-interface-symbol"></i>
-              </button>
             </form>
             <div class="d-sm-flex align-items-center">
               <button
@@ -199,10 +188,10 @@
                     <span class="badge text-outline-success">{{ t.mark }}</span>
                   </td>
                   <td class="shadow-none lh-1 fw-medium text-body-tertiary ">
-                    {{ t.amount }}
+                    {{$formatNumber( t.amount )}}
                   </td>
                   <td class="shadow-none lh-1 fw-medium text-body-tertiary">
-                    {{ t.value }} SO'M
+                    {{$formatNumber( t.value) }} SO'M
                   </td>
                   <td class="shadow-none lh-1 fw-medium text-body-tertiary">
                     <span v-if="t.mchj === 'LEADER_BETON_1'" class="badge text-outline-info">LB1</span>
@@ -293,7 +282,6 @@ export default {
     },
     getList() {
       axios.post("lb-purchase/filter" + localStorage.getItem("lang"),this.filter).then(res => {
-        console.log(res.data)
         this.allTableData = res.data
       }).catch((reason) => {
         checkPermission(reason)

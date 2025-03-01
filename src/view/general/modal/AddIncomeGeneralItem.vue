@@ -98,7 +98,7 @@
                   />
                 </div>
               </div>
-              <div class="col-lg-6 col-md-12">
+              <div class="col-lg-6 col-md-6">
                 <div class="form-group mb-15 mb-md-25">
                   <label class="d-block text-black fw-semibold mb-10">
                     Summa
@@ -110,6 +110,19 @@
                       v-model="sparePart.value"
                       readonly
                   />
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6">
+                <div class="form-group mb-15 mb-md-25">
+                  <label class="d-block text-black fw-semibold mb-10">
+                    Korxona
+                  </label>
+                  <select class="form-select fs-md-15 text-black shadow-none"
+                          v-model="sparePart.mchj">
+                    <option value="CHSM">CHSM</option>
+                    <option value="LEADER_BETON_1">LB 1</option>
+                    <option value="LEADER_BETON_2">LB 2</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -133,15 +146,20 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from "vue";
+<script>
 import axios from "@/axios/axios.js";
 import message, {checkPermissionSave} from "@/message/message.js";
 import router from "@/router";
 import validator from "@/validation/validator";
 
-export default defineComponent({
+export default {
   name: "AddIncomeGeneralItem",
+  props: {
+    editId: {
+      type: Number,
+      required: true
+    }
+  },
   data() {
     return {
       sparePart: {
@@ -152,7 +170,8 @@ export default defineComponent({
         fuelTypeId: 0,
         qty: 0,
         price: 0,
-        value: 0
+        value: 0,
+        mchj: 'CHSM'
       },
       isFuel: false,
       isSpare: false,
@@ -207,15 +226,39 @@ export default defineComponent({
         this.fuelTypes = res.data
       })
     },
+    getById(id) {
+      if (!isNaN(parseInt(id)) && id !== 0) {
+        axios.get("spare-part/" + parseInt(id)).then(res => {
+          this.sparePart = res.data
+          if (res.data.fuelType === undefined){
+            this.isFuel = false;
+            this.isSpare = true;
+            this.sparePart.sparePartTypeId = res.data.sparePartType.id
+          }else{
+            this.isFuel = true;
+            this.isSpare = false;
+            this.sparePart.fuelTypeId = res.data.fuelType.id
+          }
+        })
+      }
+    },
     cancel() {
       router.go(-1);
     }
+  },
+  watch: {
+    editId(newId) {
+      this.getById(newId);
+    }
+  },
+  mounted() {
+    this.getById(this.editId);
   },
   created() {
     this.getSpareTypes()
     this.getFuelTypes()
   }
-});
+};
 </script>
 
 <style scoped>

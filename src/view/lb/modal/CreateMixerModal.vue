@@ -309,7 +309,6 @@ export default {
       }
     },
     getById(num) {
-      console.log(num)
       if (!isNaN(parseInt(num)) && num !== 0) {
         axios.get("mixer/" + parseInt(num)).then(res => {
           this.technician = res.data

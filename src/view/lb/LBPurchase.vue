@@ -162,6 +162,19 @@
           </div>
 
           <div class="col-md-4">
+            <label class="form-label fw-medium">Nasos soat</label>
+            <input
+                type="number"
+                class="form-control shadow-none fs-md-15 text-black"
+                v-model="purchase.nasosHour"
+                not_empty='true'
+                @input="calcTotalValue"
+                required
+            />
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+
+          <div class="col-md-4">
             <label class="form-label fw-medium">Nasos </label>
             <input
                 type="number"
@@ -378,6 +391,7 @@ export default defineComponent({
         sheben: 0,
         klines: 0,
         pesok: 0,
+        nasosHour: 0,
         dobavka: 0,
         antimaroz: 0,
         mixerId: 0,

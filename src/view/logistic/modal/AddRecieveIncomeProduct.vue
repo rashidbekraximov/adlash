@@ -290,7 +290,6 @@ export default defineComponent({
     getDrobilkaAmount(drobilka,product) {
       if (drobilka !== 0 && product !== 0){
         axios.get("drobilka/" + drobilka + "/" + product).then(res => {
-          console.log(res.data)
           this.bringDrobilkaProduct.drobilkaAmount = res.data.amount
         })
       }

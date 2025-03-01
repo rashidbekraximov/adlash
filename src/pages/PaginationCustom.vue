@@ -1,8 +1,8 @@
 <template>
   <div class="pagination-area d-md-flex mt-15 mt-sm-20 mt-md-25 justify-content-between align-items-center">
     <p class="mb-0 text-paragraph">
-      Showing <span class="fw-bold">15</span> out of
-      <span class="fw-bold">{{totalPages*15}}</span> results
+<!--      Showing <span class="fw-bold">{{pages}}</span> out of-->
+<!--      <span class="fw-bold">{{totalPages}}</span> page-->
     </p>
     <nav class="mt-15 mt-md-0">
       <ul class="pagination mb-0">

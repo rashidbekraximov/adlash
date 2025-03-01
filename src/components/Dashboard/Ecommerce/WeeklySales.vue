@@ -70,7 +70,7 @@ export default {
         stroke: {
           curve: "smooth",
         },
-        colors: ["#6560F0", "#6FD3F7", "#6FD1F7"],
+        colors: ["#6560F0", "#6FD3F7", "#da4315"],
         legend: {
           position: "top",
           fontSize: "14px",

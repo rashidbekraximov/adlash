@@ -4,19 +4,6 @@
       <div
         class="mb-20 d-sm-flex align-items-center justify-content-between letter-spacing"
       >
-        <h5 class="card-title fw-bold mb-0">Bildirishnomalar</h5>
-        <div
-          class="card-select mt-10 mt-sm-0 d-inline-block d-sm-flex align-items-center ps-10 pe-10 pt-5 pb-5"
-        >
-          <span class="fw-medium text-muted me-8">Last</span>
-          <select
-            class="form-select shadow-none text-black border-0 ps-0 pt-0 pb-0 pe-20 fs-14 fw-medium"
-          >
-            <option value="1" class="fw-medium" selected>1 Week</option>
-            <option value="2" class="fw-medium">2 Week</option>
-            <option value="3" class="fw-medium">3 Week</option>
-          </select>
-        </div>
       </div>
       <div class="table-responsive">
         <table class="table text-nowrap align-middle mb-0">
@@ -26,7 +13,13 @@
                 scope="col"
                 class="text-uppercase fw-medium shadow-none text-body-tertiary fs-13 pt-0 ps-0"
               >
-                Ma'lumot
+                Xaridor
+              </th>
+              <th
+                scope="col"
+                class="text-uppercase fw-medium shadow-none text-body-tertiary fs-13 pt-0 ps-0"
+              >
+                Joylashuv
               </th>
               <th
                 scope="col"
@@ -34,14 +27,10 @@
               >
                 Kun
               </th>
-              <th
-                scope="col"
-                class="text-uppercase fw-medium shadow-none text-body-tertiary fs-13 pt-0 text-end pe-0"
-              ></th>
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr v-for="(d,index) in debts" :id="index" v-bind:key="index">
               <td class="shadow-none lh-1 fw-medium text-black-emphasis ps-0">
                 <a
                   class="text-decoration-none text-black"
@@ -49,12 +38,19 @@
                   <span class="d-block text-black-emphasis">
                     <i class="flaticon-user-1"></i>
                     <span class="mx-2 fw-semibold">{{d.client}}</span>
-                    ,<i class="flaticon-gps mx-1"></i>
-                    {{d.location}}
                   </span>
                 </a>
               </td>
-              <td class="shadow-none lh-1 fw-medium text-muted">{{d.days}}  kun</td>
+              <td class="shadow-none lh-1 fw-medium text-black-emphasis ps-0">
+                <a class="text-decoration-none text-black">
+                    <i class="flaticon-gps mx-1"></i>
+                    <span class="mx-2 fw-semibold"> {{ d.location }}</span>
+                </a>
+              </td>
+              <td class="shadow-none lh-1 fw-medium text-muted">
+                <span v-if="d.days < 0">{{ Math.abs(d.days) }}  kun</span>
+                <span v-if="d.days === 0">Bugun</span>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -64,7 +60,26 @@
 </template>
 
 <script>
+
 export default {
   name: "NotificationsContent",
+  components: {
+  },
+  data(){
+    return {
+      debts: []
+    }
+  },
+  methods: {
+    getDebtList(num) {
+      this.$http.get("purchase/debt/" + num).then(res => {
+        this.debts = res.data;
+        console.log(res.data)
+      })
+    },
+  },
+  created() {
+    this.getDebtList(1000 )
+  }
 };
 </script>

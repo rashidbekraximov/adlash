@@ -303,8 +303,6 @@ export default {
       this.technician.perKmCostAmount = Math.round((this.technician.perKmGasCost + this.technician.perKmBallonCost + this.technician.perKmOilCost + this.technician.perKmAmortization + this.technician.perKmSalaryAmount) * 100) / 100;
     },
     save() {
-      let valid = this.validation();
-      if (valid) {
         axios.post("technician/save" + localStorage.getItem("lang"), this.technician).then(res => {
           if (res.status === 201) {
             message('success', res.data.message);
@@ -317,9 +315,6 @@ export default {
         }).catch((reason) => {
           checkPermissionSave(reason)
         })
-      } else {
-        this.message('warn', "Ma'lumotlar to'liq kiritilmagan !");
-      }
     },
     getTechniqueTypes() {
       axios.get("references/def/technique_type" + localStorage.getItem('lang')).then(res => {

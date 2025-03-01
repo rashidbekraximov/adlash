@@ -23,9 +23,10 @@
         </button>
       </div>
       <div class="d-sm-flex align-items-center mt-10 mt-lg-0">
-        <select class="project-select form-select shadow-none fw-semibold rounded-1 mt-10 mt-sm-0 ms-sm-10" @change="getCosts" v-model="costTypeId">
+        <select class="project-select form-select shadow-none fw-semibold rounded-1 mt-10 mt-sm-0 ms-sm-10"
+                @change="getCosts" v-model="costTypeId">
           <option selected value="0">Tanlang</option>
-          <option v-for="(u,index) in costTypes" v-bind:key="index" :value="index">{{u}}</option>
+          <option v-for="(u,index) in costTypes" v-bind:key="index" :value="index">{{ u }}</option>
         </select>
         <input
             class="project-select form-control shadow-none fw-semibold rounded-1 mt-10 mt-sm-0 ms-sm-10"
@@ -94,7 +95,7 @@
               {{ t.costType === undefined ? '' : t.costType.name.activeLanguage }}
             </td>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
-              {{ t.amount }} SO'M
+              {{ $formatNumber(t.amount) }} SO'M
             </td>
             <td class="shadow-none lh-1 fw-medium">
               <span class="badge text-outline-success">Active</span>
@@ -114,7 +115,8 @@
                 <ul class="dropdown-menu">
                   <li>
                     <a
-                        class="dropdown-item d-flex align-items-center cursor-pointer" @click="edit(t.id)"   data-bs-toggle="modal"
+                        class="dropdown-item d-flex align-items-center cursor-pointer" @click="edit(t.id)"
+                        data-bs-toggle="modal"
                         data-bs-target="#createDailyCostModal"
                     ><i
                         class="flaticon-pen lh-1 me-8 position-relative top-1"
@@ -124,7 +126,7 @@
                   </li>
                   <li>
                     <a
-                        class="dropdown-item d-flex align-items-center cursor-pointer" @click="deleteSelectRow(t.id)"
+                        class="dropdown-item d-flex align-items-center cursor-pointer" @click="handleDelete(t.id)"
                     ><i
                         class="flaticon-delete lh-1 me-8 position-relative top-1 cursor-pointer"
                     ></i>
@@ -149,15 +151,14 @@
   <CreateDailyCostModal :editId="editId"/>
 </template>
 
-<script >
+<script>
 import CreateDailyCostModal from "./CreateDailyCostModal.vue";
-import Swal from "sweetalert2";
 import PaginationCustom from "@/pages/PaginationCustom";
-import message, {checkPermission} from "@/message/message";
+import {checkPermission} from "@/message/message";
 
-export default{
+export default {
   name: "DailyCost",
-  components: {PaginationCustom,CreateDailyCostModal},
+  components: {PaginationCustom, CreateDailyCostModal},
   data() {
     return {
       costs: [],
@@ -169,6 +170,9 @@ export default{
       currentPage: 1,
       pageSize: 10,
     }
+  },
+  async mounted() {
+    this.costTypes = await this.$api.getDataList("references/def/cost_type");
   },
   methods: {
     getCosts() {
@@ -207,44 +211,8 @@ export default{
         console.error('There was an error downloading the file:', error);
       }
     },
-    getCostTypes() {
-      this.$http.get("references/def/cost_type" + localStorage.getItem('lang')).then(res => {
-        this.costTypes = res.data
-      })
-    },
-    deleteSelectRow(id) {
-      Swal.fire({
-        title: 'Ishonchingiz komilmi?',
-        text: "Iltimos, teshkiring va tasdiqlang",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Bekor qilish',
-        confirmButtonText: 'Ha, o\'chirish!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.$http.get("/checkout-cost/delete/" + id).then(res => {
-            if (res.data.success){
-              message.success({
-                message: res.data.message,
-                duration: 2
-              });
-              setTimeout(() => {
-                location.reload();
-              },3000)
-            }else{
-              message.error({
-                message: `Xatolik yuzaga keldi !`,
-                duration: 2
-              });
-              setTimeout(() => {
-                location.reload();
-              },3000)
-            }
-          })
-        }
-      })
+    async handleDelete(id) {
+      await this.$delet.deleteRow("/checkout-cost/delete/" + id, this.getCosts());
     },
     handlePageChange(page) {
       this.currentPage = page;
@@ -265,7 +233,6 @@ export default{
   },
   created() {
     this.getCosts()
-    this.getCostTypes()
   }
 };
 </script>

@@ -49,11 +49,12 @@
                     Miqdori
                   </label>
                   <input
-                      type="number"
+                      type="text"
                       class="form-control shadow-none rounded-0 text-black"
                       placeholder="e.g. 100"
                       v-model="remainder.amount"
                       not_empty='true'
+                      v-format-number
                   />
                 </div>
               </div>
@@ -78,14 +79,13 @@
   </div>
 </template>
 
-<script lang="ts">
-import {defineComponent} from "vue";
+<script>
 import axios from "@/axios/axios.js";
 import message, {checkPermissionSave} from "@/message/message.js";
 import router from "@/router";
 import validator from "@/validation/validator";
 
-export default defineComponent({
+export default{
   name: "AddRemainder",
   data() {
     return {
@@ -100,10 +100,13 @@ export default defineComponent({
     save() {
       let valid = validator();
       if (valid) {
-        axios.post("remainder/save" + localStorage.getItem("lang"), this.remainder).then(res => {
+        const converted = this.$convertNumericFieldsToNumbers(this.remainder);
+        axios.post("remainder/save" + localStorage.getItem("lang"), converted).then(res => {
           if (res.status === 201) {
             message('success', res.data.message);
-            router.go(-1);
+            setTimeout(() => {
+              location.reload();
+            }, 3000)
           } else {
             message('error', "Xato yuzaga keldi !");
           }
@@ -129,7 +132,7 @@ export default defineComponent({
     this.getUnits()
     this.getProductTypes()
   }
-});
+}
 </script>
 
 <style scoped>

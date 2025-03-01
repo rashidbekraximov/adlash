@@ -59,7 +59,6 @@ export default {
       this.getLogisticTableDashboard()
       this.$http.get("logistic/all/" + this.beginDate + "/" + this.endDate).then(res => {
         this.allData = res.data
-        console.log(this.allData)
       })
     },
     currentDate(){

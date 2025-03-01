@@ -42,14 +42,12 @@ export default defineComponent({
       } else {
         document.body.classList.remove("sidebar-hide");
         document.body.classList.add("sidebar-show");
-
         console.log("hide");
       }
     });
     return {};
   },
   created() {
-    console.log(localStorage.getItem("lang"))
     if (localStorage.getItem("lang") !== null){
       this.id = 1;
     }else {

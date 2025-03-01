@@ -63,8 +63,8 @@
                 <input
                     class="form-control shadow-none fs-md-15 text-black"
                     type="text"
-                    v-mask="'+998 (##) ###-##-##'"
-                    placeholder="Kiriting"
+                    placeholder="e.g. 99 123 45 67"
+                    v-mask="'(##)-###-##-##'"
                     v-model="purchase.phoneNumber"
                     not_empty='true'
                     required
@@ -103,7 +103,6 @@
                   <th
                       class="text-uppercase fw-medium shadow-none text-body-tertiary fs-13 pt-0 ps-0 cursor-pointer"
                   >
-<!--                    <i class="flaticon-plus bold"></i>-->
                     <img src="@/assets/images/img/add.png" style="width: 20px; height: 20px" alt="Add" @click="addRow">
                   </th>
                 </tr>
@@ -311,16 +310,14 @@
             <div id="receipt">
               <div class="logo">CHORBOG' SAYOHAT MASKANI</div>
               <div class="tripSummary bold mb-1">
-                Tallon raqami: <span class="mx-5">{{ purchase.checkNumber }}</span>
+                Tallon raqami: <span class="mx-5">{{ tallon }}</span>
               </div>
               <div class="tripSummary bold mb-1">
                 Sana: <span class="mx-1"><i class="fa fa-calendar mx-1" aria-hidden="true"></i>{{ dateFormatter }}<i
                   class="fa fa-clock-o mx-2"></i>{{ time }}</span>
               </div>
               <div class="tripSummary bold mb-1">
-                To'lov turi: <span class="mx-4" id="payment">{{
-                  getActiveText('r_payment_type', purchase.paymentTypeId)
-                }}</span>
+                To'lov turi: <span class="mx-4" id="payment">{{getActiveText('r_payment_type', purchase.paymentTypeId)}}</span>
               </div>
               <div class="tripSummary mb-2">
                 <div class="bold">Mahsulotlar:</div>
@@ -357,10 +354,10 @@
                 </div>
               </div>
               <div class="tripSummary mb-2">
-                <div class="bold">Avto:<span class="mx-5"
-                                             id="technician">{{
-                    getActiveText('technician', purchase.technicianId)
-                  }}</span>
+                <div class="bold">Avto:
+                  <span>{{purchase.hiredCar}}</span>
+                  <span class="mx-5" id="technician">
+                    {{getActiveText('technician', purchase.technicianId) }} </span>
                 </div>
               </div>
               <div class="mt-3"></div>
@@ -479,7 +476,6 @@ export default {
       this.calcTotalValue()
     },
     getProductPrice(index, id) {
-      console.log(id)
       if (id === "7"){
         this.isProducedProduct = true;
       }else{
@@ -522,7 +518,6 @@ export default {
       this.purchase.purchasedProductList.push({productTypeId: 0, weight: 0, price: 0, value: 0})
       message('success', "Yangi qator qo'shildi !");
     },
-
     removeRow(index) {
       this.purchase.purchasedProductList.splice(index, 1);
       message('warn', index + 1 + `-qator o'chirildi !`);
@@ -593,7 +588,7 @@ export default {
       document.body.innerHTML = printContents;
       window.print();
       window.addEventListener("afterprint", (event) => {
-        console.log("After print", event);
+        console.log(event)
       });
       document.body.innerHTML = originalContents;
       location.reload()

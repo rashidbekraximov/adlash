@@ -39,10 +39,11 @@
                     Narx
                   </label>
                   <input
-                      type="number"
+                      type="text"
                       class="form-control shadow-none rounded-0 text-black"
                       placeholder="e.g. 100"
                       v-model="price.price"
+                      v-format-number
                       not_empty='true'
                   />
                 </div>
@@ -102,7 +103,8 @@ export default {
     save() {
       let valid = validator();
       if (valid) {
-        axios.post("price/save" + localStorage.getItem("lang"), this.price).then(res => {
+        const converted = this.$convertNumericFieldsToNumbers(this.price);
+        axios.post("price/save" + localStorage.getItem("lang"), converted).then(res => {
           if (res.status === 201) {
             message('success', res.data.message);
             setTimeout(() => {

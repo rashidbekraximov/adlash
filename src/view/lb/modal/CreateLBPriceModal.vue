@@ -39,7 +39,7 @@
                     Narx
                   </label>
                   <input
-                      type="number"
+                      type="text"
                       class="form-control shadow-none rounded-0 text-black"
                       placeholder="e.g. 100"
                       v-model="price.price"
@@ -71,7 +71,7 @@
 <script>
 
 import validator from "../../../validation/validator";
-import {checkPermissionSave, message} from "../../../message/message";
+import {checkPermissionSave, message} from "@/message/message";
 
 export default {
   name: "CreateLBPriceModal",

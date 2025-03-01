@@ -13,35 +13,9 @@
           XARAJAT QO'SHISH
           <i class="flaticon-plus position-relative ms-5 fs-12"></i>
         </button>
-
-        <button
-            class="default-outline-btn position-relative transition fw-medium text-black pt-10 pb-10 ps-25 pe-25 pt-md-11 pb-md-11 ps-md-30 pe-md-30 rounded-1 bg-transparent fs-md-15 fs-lg-16 d-inline-block mb-10 mb-lg-0"
-            type="button"
-        >
-          Export
-          <i class="flaticon-file-1 position-relative ms-5 top-2 fs-15"></i>
-        </button>
       </div>
       <div class="d-flex align-items-center">
-        <form class="search-box position-relative me-15">
-          <input
-              type="text"
-              class="form-control shadow-none text-black rounded-0 border-0"
-              placeholder="Search customer"
-          />
-          <button
-              type="submit"
-              class="bg-transparent text-primary transition p-0 border-0"
-          >
-            <i class="flaticon-search-interface-symbol"></i>
-          </button>
-        </form>
-        <button
-            class="dot-btn lh-1 position-relative top-3 bg-transparent border-0 shadow-none p-0 transition d-inline-block"
-            type="button"
-        >
-          <i class="flaticon-dots"></i>
-        </button>
+
       </div>
     </div>
     <div class="card-body p-15 p-sm-20 p-md-25">
@@ -97,7 +71,7 @@
               {{ t.costType === undefined ? '' : t.costType.name.activeLanguage }}
             </td>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
-              {{ t.amount }} SO'M
+              {{$formatNumber( t.amount )}} SO'M
             </td>
             <td
                 class="shadow-none lh-1 fw-medium text-body-tertiary text-end pe-0"
@@ -193,7 +167,6 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           this.$http.get("nasos-cost/delete/" + id + localStorage.getItem("lang")).then(res => {
-            console.log(res.status)
             if (res.status === 200){
               message('success', res.data.message);
               setTimeout(() => {

@@ -7,7 +7,7 @@
             <label class="d-block text-black fw-semibold mb-10">
               O'xshash ma'lumotlar
             </label>
-            <select class="form-select fs-md-15 text-black shadow-none" @change="getSimilarTableById(reference.referenceId)" not_empty='true' v-model="reference.referenceId">
+            <select class="form-select fs-md-15 text-black shadow-none" @change="getSimilarTableById(reference.referenceId)" v-model="reference.referenceId">
               <option selected disabled value="0">Tanlang...</option>
               <option v-for="(u,index) in similarData" v-bind:key="index" :value="index">{{ u }}</option>
             </select>
@@ -77,28 +77,38 @@
 </template>
 
 <script>
+
+import {checkPermissionSave} from "@/message/message";
 import {notification} from "ant-design-vue";
-import {checkPermission, checkPermissionSave} from "@/message/message";
 
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
   name: "SimilarInformation",
   data() {
     return {
       similarData: [],
       reference: {
         referenceId: 0,
-        items: [{ru: '', uzLat: '', uzCl: '', status: 'ACTIVE'}]
+        items: [{uzLat: '',status: 'ACTIVE'}]
       },
     }
   },
+  async mounted() {
+    await this.getSimilarList();
+  },
   methods: {
-    getSimilarList() {
-      this.$http.get("references/def/reference_list" + localStorage.getItem("lang")).then(res => {
-        this.similarData = res.data
-      }).catch((reason) => {
-        checkPermission(reason)
-      })
+    async getSimilarList() {
+      try {
+        this.similarData = await this.$api.getDataList("references/def/reference_list" + localStorage.getItem("lang"));
+      } catch (error) {
+        console.error('Error loading user list:', error);
+      }
+    },
+    async getSimilarTableById(id) {
+      try {
+        this.reference.items = await this.$api.getDataList("references/def_references/" + id);
+      } catch (error) {
+        console.error('Error loading user list:', error);
+      }
     },
     save() {
       this.$http.post("references/def_references" + localStorage.getItem("lang"), this.reference).then(res => {
@@ -120,28 +130,12 @@ export default {
         checkPermissionSave(reason)
       })
     },
-    getSimilarTableById(id) {
-      this.$http.get("references/def_references/" + id).then(res => {
-        this.reference.items = res.data
-      })
-    },
-    addRow() {
-      this.reference.items.push({ru: '', uzlat: '', uzCl: '', status: 'ACTIVE'})
-      notification.success({
-        message: `Yangi qator qo'shildi !`,
-        duration: 1
-      });
+      addRow() {
+      this.$addRow(this.reference);
     },
     removeRow(index) {
-      this.reference.items.splice(index, 1);
-      notification.warn({
-        message: index + 1 + `-qator o'chirildi !`,
-        duration: 1
-      });
+      this.$removeRow(this.reference, index);
     }
-  },
-  created() {
-    this.getSimilarList();
   }
 };
 </script>

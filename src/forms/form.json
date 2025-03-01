@@ -1,0 +1,235 @@
+{
+  "sidebarNavItems": [
+    {
+      "title": "Sotuv",
+      "icon": "flaticon-more-1",
+      "route": "/purchase-dashboard",
+      "visible": "seenDashboard"
+    },
+    {
+      "title": "LB",
+      "icon": "flaticon-pie-chart",
+      "route": "/lb-dashboard",
+      "visible": "seenDashboard"
+    },
+    {
+      "title": "Logistika",
+      "icon": "flaticon-bar-chart",
+      "route": "/logistic-dashboard",
+      "visible": "seenDashboard"
+    },
+    {
+      "title": "Ishlab chiqarish",
+      "icon": "flaticon-award-1",
+      "route": "/produce-dashboard",
+      "visible": "seenDashboard"
+    },
+    {
+      "title": "Nasos",
+      "icon": "flaticon-award-1",
+      "route": "/nasos-dashboard",
+      "visible": "seenDashboard"
+    },
+    {
+      "title": "Omborxona",
+      "icon": "flaticon-pie-chart-5",
+      "route": "/warehouse-dashboard",
+      "visible": "seenDashboard"
+    },
+    {
+      "title": "Kassa",
+      "icon": "flaticon-award-1",
+      "route": "/kassa",
+      "visible": "seenDashboard"
+    },
+    {
+      "title": "Sotuv",
+      "icon": "flaticon-trolley-cart",
+      "route": "/chsm-purchase-save",
+      "visible": "seenPurchase",
+      "event": "@keydown.ctrl.b",
+      "eventHandler": "onCtrlB"
+    },
+    {
+      "title": "Qarzdorlikni so'ndirish",
+      "icon": "flaticon-price-tag-2",
+      "route": "/chsm-estinguish",
+      "visible": "seenPurchase"
+    },
+    {
+      "title": "Sotuvlar ro'yxati",
+      "icon": "flaticon-bar-chart-1",
+      "route": "/chsm-purchase",
+      "visible": "seenPurchase"
+    },
+    {
+      "title": "Buyurtmalar ro'yxati",
+      "icon": "flaticon-layer-2",
+      "route": "/order",
+      "visible": "seenPurchase"
+    },
+    {
+      "title": "Mahsulot narxlari",
+      "icon": "flaticon-credit-card",
+      "route": "/price",
+      "visible": "seenPurchase"
+    },
+    {
+      "title": "Mahsulot qoldig'i",
+      "icon": "flaticon-cubes",
+      "route": "/remainder",
+      "visible": "seenPurchase"
+    },
+    {
+      "title": "Kunlik xarajat",
+      "icon": "flaticon-date-1",
+      "route": "/daily-cost",
+      "visible": "seenPurchase"
+    },
+    {
+      "title": "Texnikalar ro'yxati",
+      "icon": "flaticon-express-delivery",
+      "route": "/technique",
+      "visible": "seenLogistic"
+    },
+    {
+      "title": "Drobilka va zavod",
+      "icon": "flaticon-industry",
+      "route": "/drobilka",
+      "visible": "seenLogistic"
+    },
+    {
+      "title": "Mahsulot kirimi",
+      "icon": "flaticon-checkout",
+      "route": "/recieve-income-product",
+      "visible": "seenLogistic"
+    },
+    {
+      "title": "Tayyor mahsulot",
+      "icon": "flaticon-date",
+      "route": "/ready-product",
+      "visible": "seenProduce"
+    },
+    {
+      "title": "Xarajatlar",
+      "icon": "flaticon-form",
+      "route": "/produce-cost",
+      "visible": "seenProduce"
+    },
+    {
+      "title": "Ishlab chiqarish qoldig'i",
+      "icon": "ph ph-warehouse",
+      "route": "/produce-remainder",
+      "visible": "seenProduce"
+    },
+    {
+      "title": "Sotuv",
+      "icon": "ph ph-shopping-cart",
+      "route": "/lb-purchase",
+      "visible": "seenLB"
+    },
+    {
+      "title": "Mikserlar ro'yxati",
+      "icon": "ph ph-truck",
+      "route": "/mixer",
+      "visible": "seenLB"
+    },
+    {
+      "title": "Beton tarkibi",
+      "icon": "flaticon-folder",
+      "route": "/ingredient",
+      "visible": "seenLB"
+    },
+    {
+      "title": "Sotuvlar ro'yxati",
+      "icon": "ph ph-clipboard-text",
+      "route": "/lb-purchase-list",
+      "visible": "seenLB"
+    },
+    {
+      "title": "Tarkib qoldig'i",
+      "icon": "ph ph-lighthouse",
+      "route": "/lb-remainder",
+      "visible": "seenLB"
+    },
+    {
+      "title": "Mahsulot narxlari",
+      "icon": "flaticon-project",
+      "route": "/lb-price",
+      "visible": "seenLB"
+    },
+    {
+      "title": "Xizmat ko'rsatish",
+      "icon": "flaticon-rocket",
+      "route": "/nasos-service",
+      "visible": "seenNasos"
+    },
+    {
+      "title": "Nasos xarajatlari",
+      "icon": "flaticon-shapes",
+      "route": "/nasos-cost",
+      "visible": "seenNasos"
+    },
+    {
+      "title": "Tabel",
+      "icon": "ph ph-sticker",
+      "route": "/tabel",
+      "visible": "seenWage"
+    },
+    {
+      "title": "Yo'qlama",
+      "icon": "ph ph-x-square",
+      "route": "/dismissal",
+      "visible": "seenWage"
+    },
+    {
+      "title": "Ishchilar ro'yxati",
+      "icon": "ph ph-users",
+      "route": "/employee",
+      "visible": "seenWage"
+    },
+    {
+      "title": "Ehtiyot qism va yoqilg'i ombori",
+      "icon": "ph ph-archive",
+      "route": "/warehouse",
+      "visible": "seenWarehouse"
+    },
+    {
+      "title": "Omborga kirim",
+      "icon": "ph ph-arrow-circle-up-right",
+      "route": "/income-warehouse",
+      "visible": "seenWarehouse"
+    },
+    {
+      "title": "Ehtiyot qism va yoqilg'i sarfi",
+      "icon": "ph ph-arrow-circle-up-left",
+      "route": "/spend-warehouse",
+      "visible": "seenWarehouse"
+    },
+    {
+      "title": "O'xshash ma'lumotlar",
+      "icon": "flaticon-folder",
+      "route": "/similar-information",
+      "visible": "seenSettingSimilar"
+    },
+    {
+      "title": "Foydalanuvchilar",
+      "icon": "flaticon-user-3",
+      "route": "/users",
+      "visible": "seenSetting"
+    },
+    {
+      "title": "Ruxsatnomalar",
+      "icon": "flaticon-secure-shield",
+      "route": "/permission",
+      "visible": "seenSetting"
+    },
+    {
+      "title": "Logout",
+      "icon": "flaticon-logout",
+      "route": "/login",
+      "event": "@click",
+      "eventHandler": "logout"
+    }
+  ]
+}

@@ -108,10 +108,12 @@ export default{
     }
   },
   methods: {
-    getCosts() {
-      axios.get("references/def/cost_type").then(res => {
-        this.costTypes = res.data
-      })
+    async getOrderList() {
+      try {
+        this.costTypes = await this.$api.getDataList("references/def/cost_type"  + localStorage.getItem('lang'));
+      } catch (error) {
+        console.error('Error loading user list:', error);
+      }
     },
     save(){
       axios.post("checkout-cost/save" + localStorage.getItem("lang"), this.cost).then(res => {
@@ -138,10 +140,8 @@ export default{
   },
   mounted() {
     this.getById(this.editId);
+    this.getOrderList();
   },
-  created() {
-    this.getCosts()
-  }
 };
 </script>
 

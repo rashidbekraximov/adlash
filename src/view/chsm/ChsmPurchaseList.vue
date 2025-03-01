@@ -9,16 +9,19 @@
         </div>
         <div class="card-body">
           <form>
-            <div class="form-group w-100 mb-15 mb-md-20 cursor-pointer" @click="getList()">
-              <a class=" default-btn position-relative transition border-0 fw-medium text-white pt-11 pb-11 ps-25 pe-25 pt-md-12 pb-md-12 ps-md-30 pe-md-30 rounded-1 bg-success fs-md-15 fs-lg-16 d-inline-block me-10 mt-10 mt-md-0 text-decoration-none">
-                <i class="flaticon-list position-relative ms-5 m-6 fs-12"></i>Filterlash
+            <div class="form-group mb-15 mb-md-20 cursor-pointer" @click="getList()">
+              <a class="w-100 text-center default-btn position-relative transition border-0 fw-medium text-white pt-11 pb-11 ps-25 pe-25 pt-md-12 pb-md-12 ps-md-30 pe-md-30 rounded-1 bg-success fs-md-15 fs-lg-16 d-inline-block me-10 mt-10 mt-md-0 text-decoration-none">
+                <i class="ph ph-funnel ms-6 fs-18 fw-bold"></i>
+                <span class="fs-18 mb-5 ">Filterlash</span>
               </a>
             </div>
-            <div class="form-group w-100 mb-15 mb-md-20 cursor-pointer" @click="clear()">
-              <a class=" default-btn position-relative transition border-0 fw-medium text-white pt-11 pb-11 ps-25 pe-25 pt-md-12 pb-md-12 ps-md-30 pe-md-30 rounded-1 bg-danger fs-md-15 fs-lg-16 d-inline-block me-10 mt-10 mt-md-0 text-decoration-none">
-                <i class="flaticon-delete position-relative ms-5 m-2 fs-12"></i>Tozalash
+            <div class="form-group mb-15 mb-md-20 cursor-pointer" @click="clear()">
+              <a class="w-100 text-center default-btn position-relative transition border-0 fw-medium text-white pt-11 pb-11 ps-25 pe-25 pt-md-12 pb-md-12 ps-md-30 pe-md-30 rounded-1 bg-danger fs-md-15 fs-lg-16 d-inline-block me-10 mt-10 mt-md-0 text-decoration-none">
+                <i class="ph ph-trash  ms-6 fs-18 fw-bold"></i>
+                <span class="fs-18 mb-5">Tozalash</span>
               </a>
             </div>
+
             <div class="form-group mb-15 mb-md-20">
               <label class="d-block text-black fw-semibold mb-10">
                 Mijoz
@@ -100,20 +103,16 @@
       <div class="card mb-25 border-0 rounded-0 bg-white letter-spacing">
         <div
             class="card-head box-shadow bg-white d-md-flex align-items-center justify-content-between p-15 p-sm-20 p-md-25">
-          <form class="search-box position-relative">
-            <input
-                type="text"
-                class="form-control shadow-none text-black rounded-0 border-0"
-                placeholder="Search ticket"
-            />
+          <div class="d-sm-flex align-items-center justify-content-center">
             <button
-                type="submit"
-                class="bg-transparent text-primary transition p-0 border-0"
+                class=" m-2 default-outline-btn position-relative transition fw-medium text-black pt-10 pb-10 ps-25 pe-25 pt-md-11 pb-md-11 ps-md-30 pe-md-30 rounded-1 bg-transparent fs-md-15 fs-lg-16 d-inline-block mt-10 mt-md-0"
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#createPurchaseListModal"
             >
-              <i class="flaticon-search-interface-symbol"></i>
+              BATAFSIL
+              <i class="flaticon-eye position-relative ms-5 top-2 fs-15"></i>
             </button>
-          </form>
-          <div class="d-sm-flex align-items-center">
             <button
                 class=" m-2 default-outline-btn position-relative transition fw-medium text-black pt-10 pb-10 ps-25 pe-25 pt-md-11 pb-md-11 ps-md-30 pe-md-30 rounded-1 bg-transparent fs-md-15 fs-lg-16 d-inline-block mt-10 mt-md-0"
                 type="button" @click="downloadKassa"
@@ -200,10 +199,10 @@
                   <span class="badge text-outline-success">{{ t.checkNumber }}</span>
                 </td>
                 <td class="shadow-none lh-1 fw-medium text-danger text-uppercase">
-                  <span class="badge text-outline-success">{{ t.totalValue }} SO'M</span>
+                  <span class="badge text-outline-success">{{ $formatNumber(t.totalValue) }} SO'M</span>
                 </td>
                 <td class="shadow-none lh-1 fw-medium text-body-tertiary ">
-                  {{ t.debtTotalValue }} SO'M
+                  {{ $formatNumber(t.debtTotalValue) }} SO'M
                 </td>
                 <td class="shadow-none lh-1 fw-medium text-body-tertiary">
                   {{ t.expiryDate }}
@@ -259,6 +258,7 @@
               :totalPages="totalPages"
               @page-changed="handlePageChange"
           />
+          <PurchaseInDetails :purchases="allTableData" :delete-by-purchase-id="deleteById" :no-debt="deleteDebt" :download-nakladnoy="downloadNakladnoy"/>
         </div>
       </div>
     </div>
@@ -272,10 +272,11 @@ import Swal from "sweetalert2";
 import {notification} from "ant-design-vue";
 import {checkPermission, message} from "@/message/message";
 import PaginationCustom from "@/pages/PaginationCustom.vue";
+import PurchaseInDetails from "@/view/chsm/modal/PurchaseInDetails";
 
 export default {
   name: "ChsmPurchaseList",
-  components:{PaginationCustom},
+  components:{PurchaseInDetails, PaginationCustom},
   data() {
     return {
       filter: {
@@ -322,15 +323,12 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           axios.get("purchase/delete/" + id).then(res => {
-            console.log(res.data.status)
             if (res.status === 200) {
               notification.success({
                 message: `Muvaffaqiyatli o'chirildi !`,
                 duration: 2
               });
-              setTimeout(() => {
-                router.go(0)
-              }, 3000);
+              this.getList()
             } else {
               notification.error({
                 message: `Xatolik yuzaga keldi !`,
@@ -365,12 +363,9 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           axios.get("purchase/delete-debt/" + id).then(res => {
-            console.log(res.data.status)
             if (res.status === 200) {
               message('success', res.data.message);
-              setTimeout(() => {
-               location.reload()
-              }, 3000);
+              this.getList()
             } else {
               message('error', res.data.message);
             }

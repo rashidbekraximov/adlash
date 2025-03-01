@@ -7,7 +7,7 @@
           <li v-for="({id, date, income, spending,status }, index) of bills" :key="index"
               class=" list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg animate__animated animate__zoomIn">
             <div class="d-flex flex-column">
-              <h6 class="mb-3 text-md font-weight-bold"><i class="ni ni-cart text-info text-gradient me-2"></i>
+              <h6 class="mb-3 text-md font-weight-bold"><i class="flaticon-shopping-cart-1 text-info me-2"></i>
                 Umumiy sotuv</h6>
               <span class="mb-2 text-xs">
               Qolgan mablag':
@@ -33,7 +33,7 @@
               <span class="mb-2 text-xs">
               Sana:
               <span class="text-dark ms-sm-2 font-weight-bold"><i
-                  class="ni ni-calendar-grid-58 text-info text-gradient me-1"></i> {{ date }}</span>
+                  class="flaticon-calendar-1 text-info text-gradient me-1"></i> {{ date }}</span>
             </span>
             </div>
             <div class="ms-auto text-end">
@@ -84,7 +84,7 @@
               <div class="row h-50">
               </div>
               <div class="row" v-if="status === 'PASSIVE'">
-                <h6 class="text-sm"><img src="@/assets/images/icon/verify.png" width="15" height="15" class="me-1">Tasdiqlangan
+                <h6 class="text-sm"><img src="@/assets/images/icon/verify.png" width="24" height="24" class="me-1">Tasdiqlangan
                 </h6>
               </div>
               <div class="row" v-else>
@@ -93,6 +93,7 @@
             </div>
           </li>
         </ul>
+        <hr class="divider">
       </div>
     </div>
   </div>

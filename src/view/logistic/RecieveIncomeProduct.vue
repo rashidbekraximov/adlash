@@ -13,35 +13,9 @@
           MAHSULOT KIRIM
           <i class="flaticon-plus position-relative ms-5 fs-12"></i>
         </button>
-
-        <button
-            class="default-outline-btn position-relative transition fw-medium text-black pt-10 pb-10 ps-25 pe-25 pt-md-11 pb-md-11 ps-md-30 pe-md-30 rounded-1 bg-transparent fs-md-15 fs-lg-16 d-inline-block mb-10 mb-lg-0"
-            type="button"
-        >
-          Export
-          <i class="flaticon-file-1 position-relative ms-5 top-2 fs-15"></i>
-        </button>
       </div>
       <div class="d-flex align-items-center">
-        <form class="search-box position-relative me-15">
-          <input
-              type="text"
-              class="form-control shadow-none text-black rounded-0 border-0"
-              placeholder="Search customer"
-          />
-          <button
-              type="submit"
-              class="bg-transparent text-primary transition p-0 border-0"
-          >
-            <i class="flaticon-search-interface-symbol"></i>
-          </button>
-        </form>
-        <button
-            class="dot-btn lh-1 position-relative top-3 bg-transparent border-0 shadow-none p-0 transition d-inline-block"
-            type="button"
-        >
-          <i class="flaticon-dots"></i>
-        </button>
+
       </div>
     </div>
     <div class="card-body p-15 p-sm-20 p-md-25">
@@ -54,6 +28,12 @@
                 class="text-uppercase fw-medium shadow-none text-body-tertiary fs-13 pt-0 ps-0"
             >
               ID
+            </th>
+            <th
+                scope="col"
+                class="text-uppercase fw-medium shadow-none text-body-tertiary fs-13 pt-0"
+            >
+              SANA
             </th>
             <th
                 scope="col"
@@ -73,12 +53,12 @@
             >
               TEXNIKA TURI
             </th>
-            <th
-                scope="col"
-                class="text-uppercase fw-medium shadow-none text-body-tertiary fs-13 pt-0"
-            >
-              O'LCHOV BIRLIKI
-            </th>
+<!--            <th-->
+<!--                scope="col"-->
+<!--                class="text-uppercase fw-medium shadow-none text-body-tertiary fs-13 pt-0"-->
+<!--            >-->
+<!--              O'LCHOV BIRLIKI-->
+<!--            </th>-->
             <th
                 scope="col"
                 class="text-uppercase fw-medium shadow-none text-body-tertiary fs-13 pt-0"
@@ -115,6 +95,9 @@
               </div>
             </th>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
+              <span class="badge text-outline-success">{{ t.date }}</span>
+            </td>
+            <td class="shadow-none lh-1 fw-medium text-black-emphasis">
               {{ t.drobilkaType.name.activeLanguage }}
             </td>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
@@ -124,19 +107,13 @@
               {{ t.technician.techniqueType.name.activeLanguage }}
             </td>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
-              {{ t.unit.name.activeLanguage }}
+              {{$formatNumber( t.amount )}}
             </td>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
-              {{ t.amount }}
-            </td>
-            <td class="shadow-none lh-1 fw-medium text-black-emphasis">
-              {{ t.value }} SO'M
+              {{$formatNumber(t.value )}} SO'M
             </td>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
               {{ t.mchj}}
-            </td>
-            <td class="shadow-none lh-1 fw-medium">
-              <span class="badge text-outline-success">Active</span>
             </td>
             <td
                 class="shadow-none lh-1 fw-medium text-body-tertiary text-end pe-0"

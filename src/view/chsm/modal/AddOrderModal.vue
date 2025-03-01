@@ -304,7 +304,6 @@ export default {
       this.addValue(index, this.order.purchasedProductList[index].price, 0)
     },
     getById(id) {
-      console.log(id);
       if (!isNaN(parseInt(id)) && id !== 0) {
         axios.get("order/" + parseInt(id)).then(res => {
           this.order = res.data

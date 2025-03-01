@@ -212,8 +212,8 @@ const routes = [
     component: Home,
     children: [
       //Dashboard
-      { path: '', name: 'ProjectManagementPage', component: ProjectManagementPage },
-      { path: 'purchase-dashboard', name: 'ProjectManagementPage', component: ProjectManagementPage },
+     { path: '', name: 'ProjectManagementPage', component: ProjectManagementPage },
+     { path: 'purchase-dashboard', name: 'ProjectManagementPage', component: ProjectManagementPage },
       { path: 'lb-dashboard', name: 'LeaderBetonDashboard', component: LeaderBetonDashboard },
       { path: 'logistic-dashboard', name: 'LogisticDashboard', component: LogisticDashboard },
       { path: 'produce-dashboard', name: 'ProduceDashboard', component: ProduceDashboard },

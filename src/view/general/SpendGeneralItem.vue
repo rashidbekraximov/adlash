@@ -91,7 +91,7 @@
                 scope="col"
                 class="text-uppercase fw-medium shadow-none text-body-tertiary fs-13 pt-0"
             >
-              STATUS
+              KORXONA
             </th>
             <th
                 scope="col"
@@ -124,16 +124,16 @@
               {{ t.item === 'FUEL' ? t.fuelType.name.activeLanguage : t.sparePartType.name.activeLanguage }}
             </td>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
-              {{ t.price }} SO'M
+              {{ $formatNumber($formatNumberForAmount(t.price)) }} SO'M
             </td>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
-              {{ t.qty }}
+              {{ $formatNumberForAmount(t.qty) }}
             </td>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
-              {{ t.value }} SO'M
+              {{ $formatNumber(t.value) }} SO'M
             </td>
             <td class="shadow-none lh-1 fw-medium">
-              <span class="badge text-outline-success">Active</span>
+              <span class="badge text-outline-success">{{t.mchj}}</span>
             </td>
             <td
                 class="shadow-none lh-1 fw-medium text-body-tertiary text-end pe-0"
@@ -150,7 +150,9 @@
                 <ul class="dropdown-menu">
                   <li>
                     <a
-                        class="dropdown-item d-flex align-items-center"
+                        class="dropdown-item d-flex align-items-center cursor-pointer" @click="edit(t.id)"
+                        data-bs-toggle="modal"
+                        data-bs-target="#createSpendGeneralItemModal"
                     ><i
                         class="flaticon-pen lh-1 me-8 position-relative top-1"
                     ></i>
@@ -181,7 +183,7 @@
       />
     </div>
   </div>
-  <AddSpendGeneralItem />
+  <AddSpendGeneralItem :editId="editId"/>
 </template>
 
 <script>
@@ -205,6 +207,7 @@ export default {
       endDate: null,
       currentPage: 1,
       pageSize: 10,
+      editId: 0,
     }
   },
   methods :{
@@ -214,6 +217,9 @@ export default {
       }).catch((reason) => {
         checkPermission(reason)
       })
+    },
+    edit(objectEdit) {
+      this.editId = objectEdit;
     },
     async downloadExcel() {
       try {
@@ -265,23 +271,17 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           axios.delete("/spending-spare-part/delete/" + id).then(res => {
-            console.log(res.status)
             if (res.status === 200){
               notification.success({
                 message: `Muvaffaqiyatli o'chirildi !`,
                 duration: 2
               });
-              setTimeout(() => {
-                location.reload();
-              },3000)
+              this.getIncomeSpareParts()
             }else{
               notification.error({
                 message: `Xatolik yuzaga keldi !`,
                 duration: 2
               });
-              setTimeout(() => {
-                location.reload();
-              },3000)
             }
           })
         }

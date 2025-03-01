@@ -13,7 +13,6 @@
 
 <script>
 import BillingCard from "@/components/BillingCard.vue";
-import {checkPermission} from "@/message/message";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -21,22 +20,13 @@ export default {
   components: {
     BillingCard
   },
-  data(){
-    return{
+  data() {
+    return {
       income: []
     }
   },
-  methods:{
-    getIncomeList(){
-      this.$http.get("daily-income/list").then(res => {
-        this.income = res.data
-      }).catch((reason) => {
-        checkPermission(reason)
-      })
-    },
-  },
-  created() {
-    this.getIncomeList();
-  },
+  async mounted() {
+    this.income = await this.$api.getDataList("daily-income/list");
+  }
 };
 </script>

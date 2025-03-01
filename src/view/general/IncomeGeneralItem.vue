@@ -13,35 +13,38 @@
                 KIRIM QILISH
                 <i class="flaticon-plus position-relative ms-5 fs-12"></i>
               </button>
-
-              <button
-                  class="default-outline-btn position-relative transition fw-medium text-black pt-10 pb-10 ps-25 pe-25 pt-md-11 pb-md-11 ps-md-30 pe-md-30 rounded-1 bg-transparent fs-md-15 fs-lg-16 d-inline-block mb-10 mb-lg-0"
-                  type="button"
-              >
-                Export
-                <i class="flaticon-file-1 position-relative ms-5 top-2 fs-15"></i>
-              </button>
             </div>
-      <div class="d-flex align-items-center">
-        <form class="search-box position-relative me-15">
-          <input
-              type="text"
-              class="form-control shadow-none text-black rounded-0 border-0"
-              placeholder="Search customer"
-          />
-          <button
-              type="submit"
-              class="bg-transparent text-primary transition p-0 border-0"
-          >
-            <i class="flaticon-search-interface-symbol"></i>
-          </button>
-        </form>
-        <button
-            class="dot-btn lh-1 position-relative top-3 bg-transparent border-0 shadow-none p-0 transition d-inline-block"
-            type="button"
-        >
-          <!--          <i class="flaticon-dots"></i>-->
-        </button>
+      <div class="d-sm-flex align-items-center mt-10 mt-lg-0">
+        <select class="project-select form-select shadow-none fw-semibold rounded-1 mt-10 mt-sm-0 ms-sm-10"
+                v-model="filter.mchj" @change="getIncomeSpareParts()">
+          <option selected disabled value="0">Tanlang</option>
+          <option value="CHSM">CHSM</option>
+          <option value="LEADER_BETON_1">LB 1</option>
+          <option value="LEADER_BETON_2">LB 2</option>
+        </select>
+        <select class="project-select form-select shadow-none fw-semibold rounded-1 mt-10 mt-sm-0 ms-sm-10"
+                v-model="filter.item" @change="checkGroup(filter.item)" >
+          <option selected disabled value="0">Tanlang...</option>
+          <option value="SPARE_PART">Ehtiyot qism</option>
+          <option value="FUEL">Yoqilg'i</option>
+        </select>
+        <select class="project-select form-select shadow-none fw-semibold rounded-1 mt-10 mt-sm-0 ms-sm-10"
+                v-model="filter.fuelType" v-if="isFuel" @change="getIncomeSpareParts()">
+          <option selected disabled value="0">Tanlang...</option>
+          <option v-for="(u,index) in fuelTypes" v-bind:key="index" :value="index">{{ u }}</option>
+        </select>
+        <select class="project-select form-select shadow-none fw-semibold rounded-1 mt-10 mt-sm-0 ms-sm-10"
+                v-model="filter.fuelType" v-if="isSpare" @change="getIncomeSpareParts()">
+          <option selected disabled value="0">Tanlang...</option>
+          <option v-for="(u,index) in spareTypes" v-bind:key="index" :value="index">{{ u }}</option>
+        </select>
+        <input
+            type="text"
+            class="form-control shadow-none text-black fw-semibold rounded-1 mt-10 mt-sm-0 ms-sm-10 w-25"
+            placeholder="kg/litr/dona"
+            v-model="calcValue"
+            readonly
+        />
       </div>
     </div>
     <div class="card-body p-15 p-sm-20 p-md-25">
@@ -88,7 +91,7 @@
                 scope="col"
                 class="text-uppercase fw-medium shadow-none text-body-tertiary fs-13 pt-0"
             >
-              STATUS
+              KORXONA
             </th>
             <th
                 scope="col"
@@ -111,19 +114,19 @@
               {{ t.date }}
             </td>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
-              {{ t.item === 'FUEL' ? t.fuelType.name.activeLanguage : t.sparePartType.name.activeLanguage }}
+              {{ t.item === 'FUEL' ? t.fuelType.name.uz_lat : t.sparePartType.name.uz_lat }}
             </td>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
-              {{ t.price }} SO'M
+              {{$formatNumber( $formatNumberForAmount(t.price)) }} SO'M
             </td>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
-              {{ t.qty }}
+              {{ $formatNumberForAmount(t.qty) }}
             </td>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
-              {{ t.value }} SO'M
+              {{$formatNumber( t.value ) }} SO'M
             </td>
             <td class="shadow-none lh-1 fw-medium">
-              <span class="badge text-outline-success">Active</span>
+              <span class="badge text-outline-success">{{t.mchj}}</span>
             </td>
             <td
                 class="shadow-none lh-1 fw-medium text-body-tertiary text-end pe-0"
@@ -140,7 +143,9 @@
                 <ul class="dropdown-menu">
                   <li>
                     <a
-                        class="dropdown-item d-flex align-items-center"
+                        class="dropdown-item d-flex align-items-center cursor-pointer" @click="edit(t.id)"
+                        data-bs-toggle="modal"
+                        data-bs-target="#createIncomeGeneralItemModal"
                     ><i
                         class="flaticon-pen lh-1 me-8 position-relative top-1"
                     ></i>
@@ -148,7 +153,7 @@
                     >
                   </li>
                   <li>
-                    <a class="dropdown-item d-flex align-items-center"><i
+                    <a class="dropdown-item d-flex align-items-center cursor-pointer" @click="handleDeleteIncome(t.id)"><i
                         class="flaticon-delete lh-1 me-8 position-relative top-1"></i>
                       Delete</a>
                   </li>
@@ -167,83 +172,86 @@
       />
     </div>
   </div>
-  <AddIncomeGeneralItem />
+  <AddIncomeGeneralItem :editId="editId"/>
 </template>
 
 <script>
 import axios from "@/axios/axios.js";
 import PaginationCustom from "@/pages/PaginationCustom.vue";
 import AddIncomeGeneralItem from "@/view/general/modal/AddIncomeGeneralItem.vue";
-import {notification} from "ant-design-vue";
-import Swal from "sweetalert2";
 import {checkPermission} from "@/message/message";
 
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
   name: "IncomeGeneralItem",
   components: {AddIncomeGeneralItem, PaginationCustom},
   data() {
     return {
       incomes: [],
+      fuelTypes: [],
+      spareTypes: [],
+      isFuel: false,
+      isSpare: false,
+      filter: {
+        item: null,
+        mchj: null,
+        fuelType: 0,
+      },
+      totalValue: 0,
+      calcValue: "",
+      sparePart: 0,
       currentPage: 1,
       pageSize: 10,
+      editId: 0,
     }
+  },
+  async mounted() {
+      this.fuelTypes = await this.$api.getDataList("references/def/fuel_type" + localStorage.getItem('lang'));
+      this.spareTypes = await this.$api.getDataList("references/def/spare_types" + localStorage.getItem('lang'));
   },
   methods: {
     getIncomeSpareParts() {
-      axios.get("spare-parts" + localStorage.getItem("lang")).then(res => {
-        this.incomes = res.data
-      }).catch((reason) => {
-        checkPermission(reason)
-      })
+      if (!(this.filter.item == null && this.filter.mchj != null)){
+        axios.post("spare-parts",this.filter).then(res => {
+          this.incomes = res.data
+          this.totalValue = 0;
+          if (this.filter.item != null && this.filter.mchj != null){
+            for (let i = 0; i < this.incomes.length; i++) {
+              this.totalValue += this.incomes[i].qty;
+            }
+          }
+          this.calcValue = this.$formatNumber(this.totalValue);
+        }).catch((reason) => {
+          checkPermission(reason)
+        })
+      }
+    },
+    edit(objectEdit) {
+      this.editId = objectEdit;
+    },
+    checkGroup(type){
+      if (type === "FUEL"){
+        this.isFuel = true;
+        this.isSpare = false;
+      }else{
+        this.isFuel = false;
+        this.isSpare = true;
+      }
     },
     handlePageChange(page) {
       this.currentPage = page;
     },
-    deleteRow(id) {
-      Swal.fire({
-        title: 'Ishonchingiz komilmi?',
-        text: "Iltimos, teshkiring va tasdiqlang",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Bekor qilish',
-        confirmButtonText: 'Ha, o\'chirish!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.$http.get("cost/delete/" + id).then(res => {
-            console.log(res.status)
-            if (res.status === 200){
-              notification.success({
-                message: `Muvaffaqiyatli o'chirildi !`,
-                duration: 2
-              });
-              setTimeout(() => {
-                location.reload();
-              },3000)
-            }else{
-              notification.error({
-                message: `Xatolik yuzaga keldi !`,
-                duration: 2
-              });
-              setTimeout(() => {
-                location.reload();
-              },3000)
-            }
-          })
-        }
-      })
-    }
+    async handleDeleteIncome(id) {
+      await this.$delet.deleteRow("spare-part/delete/" + id, this.getIncomeSpareParts);
+    },
   },
   computed: {
     totalPages() {
-      return Math.ceil(this.incomes.length / this.pageSize);
+      return Math.ceil(this.incomes !== undefined ? this.incomes.length : 0 / this.pageSize);
     },
     paginatedData() {
       const startIndex = (this.currentPage - 1) * this.pageSize;
       const endIndex = startIndex + this.pageSize;
-      return this.incomes.slice(startIndex, endIndex);
+      return this.incomes !== undefined ? this.incomes.slice(startIndex, endIndex) : [];
     }
   },
   created() {

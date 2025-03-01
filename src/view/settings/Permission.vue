@@ -146,7 +146,6 @@
 </template>
 
 <script>
-import message from "@/message/message";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -163,7 +162,6 @@ export default {
   methods: {
     getFormListByRole(role) {
       this.$http.get("role-name/" + role + localStorage.getItem("lang")).then(res => {
-        console.log(res.data)
         if (res.status === 201){
           this.roleForm.roleFormPermissions = res.data
           for (let i = 0; i < this.roleForm.roleFormPermissions.length; i++) {
@@ -177,15 +175,9 @@ export default {
         }
       })
     },
-    saveRole() {
-      this.$http.post("role/save" + localStorage.getItem("lang"), this.roleForm).then(res => {
-        console.log(res)
-        if (res.status === 201) {
-          message('success', res.data.message);
-        }
-      }).catch((reason) => {
-        message('error', reason.response.data.message);
-      })
+    async saveRole() {
+      const url = `role/save${localStorage.getItem("lang")}`;
+      await this.$save.saveAllData(url, this.roleForm,false);
     },
   }
 }

@@ -130,17 +130,13 @@ export default {
       this.task[0].data = []
       this.$http.get("produced-bar/amounts/" + sex).then(res => {
         this.task[0].data = res.data;
-        console.log(this.task[0].data)
       })
     },
     getProduceBarDate(sex){
       this.$http.get("produced-bar/dates/" + sex).then(res => {
-        console.log(res.data[0])
         for (let i = 0; i < res.data.length; i++) {
-          console.log(res.data[i].slice(','))
           this.taskOverviewChart.xaxis.categories[i] = res.data[i]
         }
-        console.log(this.taskOverviewChart.xaxis.categories)
       })
     },
   },

@@ -90,13 +90,10 @@
               <p class="text-sm text-center  font-weight-bold mb-0">{{ t.client }} </p>
             </td>
             <td>
-              <p class="text-sm text-center  font-weight-bold mb-0">{{ t.client }} </p>
+              <p class="text-sm text-center  font-weight-bold mb-0">{{ $formatNumber(t.totalValue) }} </p>
             </td>
             <td>
-              <p class="text-sm text-center  font-weight-bold mb-0">{{ t.totalValue }} </p>
-            </td>
-            <td>
-              <p class="text-sm text-center  font-weight-bold mb-0">{{ t.debtTotalValue }} </p>
+              <p class="text-sm text-center  font-weight-bold mb-0">{{ $formatNumber(t.debtTotalValue) }} </p>
             </td>
             <td>
               <p class="text-sm text-center  font-weight-bold mb-0">{{ t.mchj }} </p>
@@ -251,40 +248,21 @@ export default defineComponent({
       row: rowSelection
     };
   },
+  async mounted() {
+    this.rows = [];
+    this.data = await this.$api.getDataList("purchase/debts" + localStorage.getItem("lang"));
+  },
   methods: {
-    save() {
-      let valid = validator();
-      if (valid) {
-        this.estinguish.allDebts = this.rows;
-        this.$http.post("estinguish/save" + localStorage.getItem("lang"), this.estinguish).then(res => {
-          if (res.status === 201) {
-            message('success', res.data.message);
-            setTimeout(() => {
-              location.reload();
-            },3000)
-          } else {
-            message('error', "Xato yuzaga keldi !");
-          }
-        }).catch((reason) => {
-          checkPermissionSave(reason)
-        })
-      }else{
-        message('warn',"Ma'lumotlar to'liq kiritilmagan !");
-      }
+    async save() {
+      this.estinguish.allDebts = this.rows;
+      const url = `estinguish/save${localStorage.getItem("lang")}`;
+      await this.$save.saveAllData(url, this.estinguish,true);
     },
-    getList() {
-      this.rows = [];
-      this.$http.get("purchase/debts" + localStorage.getItem("lang")).then(res => {
-        this.data = res.data
-      })
-    },
-    searchList(client) {
-      this.$http.get("purchase/debts/searched?client=" + client).then(res => {
-        this.data = res.data
-      })
+    async searchList(client) {
+      this.data = await this.$api.getDataList("purchase/debts/searched?client=" + client);
     },
     calcDebtValue() {
-      this.estinguish.remainderDebtValue = this.estinguish.debtTotalValue - this.estinguish.paidValue;
+      this.estinguish.remainderDebtValue = this.$calculator.subtract(this.estinguish.debtTotalValue,this.estinguish.paidValue);
     },
     getSelectedRows() {
       let value = 0;
@@ -296,9 +274,6 @@ export default defineComponent({
       this.visible = false;
       this.calcDebtValue();
     }
-  },
-  created() {
-    this.getList();
   },
   setup() {
     const visible = ref(false);
