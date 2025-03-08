@@ -92,11 +92,12 @@
               {{ t.date }}
             </td>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
-              {{ t.costType === undefined ? '' : t.costType.name.activeLanguage }}
+              {{ t.costType === undefined ? '' : t.costType.name.uz_lat }}
             </td>
             <td class="shadow-none lh-1 fw-medium text-black-emphasis">
               {{ $formatNumber(t.amount) }} SO'M
             </td>
+
             <td class="shadow-none lh-1 fw-medium">
               <span class="badge text-outline-success">Active</span>
             </td>

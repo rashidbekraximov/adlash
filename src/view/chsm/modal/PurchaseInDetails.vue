@@ -114,9 +114,9 @@
                   <button type="button" class="custom-button" @click="childDeleteByPurchaseId(t.id)">
                     <i class="fa-solid fa-trash"></i>
                   </button>
-                  <button type="button" class="custom-button">
-                    <i class="flat"></i>
-                  </button>
+<!--                  <button type="button" class="custom-button">-->
+<!--                    <i class="flat"></i>-->
+<!--                  </button>-->
                 </td>
               </tr>
               </tbody>
