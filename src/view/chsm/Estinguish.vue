@@ -139,7 +139,7 @@
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col-md-4 mb-3">
+        <div class="col-md-4">
           <label>Qoldiq qarz qiymati</label>
           <input
               class="form-control"
@@ -148,6 +148,14 @@
               v-model="estinguish.remainderDebtValue"
               readonly
           />
+        </div>
+        <div class="col-md-4">
+          <label>To'lov turi</label>
+          <select class="form-select fs-md-15 text-black shadow-none" not_empty='true'
+                  v-model="estinguish.paymentTypeId">
+            <option selected disabled value="0">Tanlang...</option>
+            <option v-for="(s,index) in paymentTypes" v-bind:key="index" :value="index">{{ s }}</option>
+          </select>
         </div>
       </div>
       <div class="row mb-3">
@@ -205,6 +213,7 @@ export default defineComponent({
         paidValue: 0,
         remainderDebtValue: 0
       },
+      paymentTypes: [],
       products: [],
       rows: selects,
       rowObject: {},
@@ -273,7 +282,15 @@ export default defineComponent({
       this.estinguish.debtTotalValue = value;
       this.visible = false;
       this.calcDebtValue();
-    }
+    },
+    getSelect(name) {
+      this.$http.get("references/def/" + name + localStorage.getItem("lang")).then(res => {
+          this.paymentTypes = res.data;
+      })
+    },
+  },
+  created() {
+    this.getSelect('payment_type');
   },
   setup() {
     const visible = ref(false);

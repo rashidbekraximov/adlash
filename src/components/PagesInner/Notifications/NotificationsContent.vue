@@ -16,6 +16,24 @@
                 Xaridor
               </th>
               <th
+                  scope="col"
+                  class="text-uppercase fw-medium shadow-none text-body-tertiary fs-13 pt-0 ps-0"
+              >
+                Sotilgan sana
+              </th>
+              <th
+                  scope="col"
+                  class="text-uppercase fw-medium shadow-none text-body-tertiary fs-13 pt-0 ps-0"
+              >
+                Mahsulotlar
+              </th>
+              <th
+                  scope="col"
+                  class="text-uppercase fw-medium shadow-none text-body-tertiary fs-13 pt-0 ps-0"
+              >
+                Umumiy qarz miqdori
+              </th>
+              <th
                 scope="col"
                 class="text-uppercase fw-medium shadow-none text-body-tertiary fs-13 pt-0 ps-0"
               >
@@ -39,6 +57,22 @@
                     <i class="flaticon-user-1"></i>
                     <span class="mx-2 fw-semibold">{{d.client}}</span>
                   </span>
+                </a>
+              </td>
+              <td class="shadow-none lh-1 fw-medium text-black-emphasis ps-0">
+                <a class="text-decoration-none text-black">
+                    <i class="flaticon-date mx-1"></i>
+                    <span class="mx-2 fw-semibold"> {{ d.date }}</span>
+                </a>
+              </td>
+              <td class="shadow-none lh-1 fw-medium text-black-emphasis ps-0">
+                <a class="text-decoration-none text-black">
+                    <span class="mx-2 fw-semibold"> {{ d.productName }}</span>
+                </a>
+              </td>
+              <td class="shadow-none lh-1 fw-medium text-black-emphasis ps-0">
+                <a class="text-decoration-none text-black">
+                    <span class="mx-2 fw-semibold"> {{ d.debtTotalValue }}</span>
                 </a>
               </td>
               <td class="shadow-none lh-1 fw-medium text-black-emphasis ps-0">
